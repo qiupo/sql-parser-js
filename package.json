@@ -1,6 +1,6 @@
 {
   "name": "sql-parser-ast-js",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A powerful SQL parser library for JavaScript that supports parsing common SQL statements into AST with intelligent query analysis capabilities",
   "type": "module",
   "main": "dist/sql-parser.js",

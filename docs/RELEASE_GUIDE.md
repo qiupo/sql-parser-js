@@ -85,7 +85,7 @@ npm login
 npm whoami
 
 # 检查包名是否可用
-npm view sql-parser-ast-js
+npm view sql-parser-js
 ```
 
 ## 📦 发布流程
@@ -127,10 +127,10 @@ npm view sql-parser-ast-js
 npm pack
 
 # 检查打包内容
-tar -tzf sql-parser-ast-js-*.tgz
+tar -tzf sql-parser-js-*.tgz
 
 # 本地安装测试
-npm install ./sql-parser-ast-js-*.tgz
+npm install ./sql-parser-js-*.tgz
 ```
 
 ## 🔍 故障排除
@@ -139,7 +139,7 @@ npm install ./sql-parser-ast-js-*.tgz
 
 #### 1. npm 发布失败
 ```
-Error: 403 Forbidden - PUT https://registry.npmjs.org/sql-parser-ast-js
+Error: 403 Forbidden - PUT https://registry.npmjs.org/sql-parser-js
 ```
 **解决方案**：
 - 检查 NPM_TOKEN 是否正确
@@ -194,7 +194,7 @@ Error: Build failed
 ## 📞 支持
 
 如果在发布过程中遇到问题：
-1. 查看 [GitHub Issues](https://github.com/qiupo/sql-parser-ast-js/issues)
+1. 查看 [GitHub Issues](https://github.com/qiupo/sql-parser-js/issues)
 2. 创建新的 issue 描述问题
 3. 联系项目维护者
 
