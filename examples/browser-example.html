@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SQL 解析器 - 浏览器示例</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .example-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            background-color: #fafafa;
+        }
+
+        .example-title {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        textarea {
+            width: 100%;
+            height: 120px;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            resize: vertical;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #3498db;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin: 10px 5px 10px 0;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        .result {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            white-space: pre-wrap;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .success {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+
+        .error {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+
+        .info {
+            background-color: #d1ecf1;
+            border: 1px solid #bee5eb;
+            color: #0c5460;
+        }
+
+        .preset-buttons {
+            margin-bottom: 10px;
+        }
+
+        .preset-btn {
+            background-color: #6c757d;
+            font-size: 12px;
+            padding: 5px 10px;
+        }
+
+        .preset-btn:hover {
+            background-color: #5a6268;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🔍 SQL 解析器 - 浏览器示例</h1>
+
+        <div class="example-section">
+            <div class="example-title">SQL 语句解析器</div>
+            <div class="preset-buttons">
+                <button class="preset-btn" onclick="loadPreset('basic')">基本查询</button>
+                <button class="preset-btn" onclick="loadPreset('join')">JOIN 查询</button>
+                <button class="preset-btn" onclick="loadPreset('complex')">复杂查询</button>
+                <button class="preset-btn" onclick="loadPreset('case')">CASE 表达式</button>
+                <button class="preset-btn" onclick="loadPreset('insert')">INSERT 语句</button>
+                <button class="preset-btn" onclick="loadPreset('update')">UPDATE 语句</button>
+                <button class="preset-btn" onclick="loadPreset('error')">错误示例</button>
+            </div>
+            <textarea id="sqlInput" placeholder="在这里输入 SQL 语句...">SELECT id, name, email FROM users WHERE age > 18 ORDER
+                BY name LIMIT 10</textarea>
+            <div>
+                <button onclick="parseSQL()">🔍 解析 SQL</button>
+                <button onclick="validateSQL()">✅ 验证 SQL</button>
+                <button onclick="extractTables()">📋 提取表名</button>
+                <button onclick="extractColumns()">📝 提取列名</button>
+                <button onclick="analyzeSQL()">🧠 智能分析</button>
+                <button onclick="clearResult()">🗑️ 清空结果</button>
+            </div>
+            <div id="result" class="result info" style="display: none;"></div>
+        </div>
+
+        <div class="example-section">
+            <div class="example-title">📊 功能特性</div>
+            <ul>
+                <li><strong>支持的语句类型:</strong> SELECT, INSERT, UPDATE, DELETE</li>
+                <li><strong>高级特性:</strong> JOIN, 子查询, CASE 表达式, 聚合函数</li>
+                <li><strong>智能分析:</strong> 查询条件提取, 字段信息分析, 复杂度评估</li>
+                <li><strong>错误处理:</strong> 详细的语法错误信息和位置定位</li>
+                <li><strong>实用工具:</strong> 表名提取, 列名提取, SQL 验证</li>
+                <li><strong>AST 输出:</strong> 完整的抽象语法树结构</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- 引入构建好的 SQL 解析器 -->
+    <script src="../dist/sql-parser.min.js"></script>
+
+    <script>
+        // 预设的 SQL 示例
+        const presets = {
+            basic: `SELECT id, name, email, age 
+FROM users 
+WHERE age > 18 AND active = true 
+ORDER BY name ASC 
+LIMIT 10`,
+
+            join: `SELECT u.name, u.email, p.title, p.created_at
+FROM users u
+LEFT JOIN posts p ON u.id = p.user_id
+WHERE u.active = true
+ORDER BY p.created_at DESC`,
+
+            complex: `SELECT u.name, u.email, COUNT(o.id) as order_count, SUM(o.total) as total_spent
+FROM users u
+LEFT JOIN orders o ON u.id = o.user_id
+WHERE u.active = true 
+  AND u.created_at BETWEEN '2023-01-01' AND '2023-12-31'
+  AND u.age IN (25, 30, 35, 40)
+  AND u.name LIKE '%张%'
+GROUP BY u.id, u.name, u.email
+HAVING COUNT(o.id) > 5 AND SUM(o.total) > 1000
+ORDER BY total_spent DESC, order_count DESC
+LIMIT 20`,
+
+            case: `SELECT 
+    name,
+    age,
+    CASE 
+        WHEN age >= 65 THEN 'Senior'
+        WHEN age >= 18 THEN 'Adult'
+        WHEN age >= 13 THEN 'Teen'
+        ELSE 'Child'
+    END as age_group
+FROM users
+WHERE active = true`,
+
+            insert: `INSERT INTO users (name, email, age, active) 
+VALUES 
+    ('张三', 'zhangsan@example.com', 25, true),
+    ('李四', 'lisi@example.com', 30, true)`,
+
+            update: `UPDATE users 
+SET 
+    email = 'newemail@example.com',
+    last_login = NOW(),
+    active = true
+WHERE id = 123 AND age > 18`,
+
+            error: `SELECT * FROM WHERE age > 18` // 故意的语法错误
+        };
+
+        // 加载预设示例
+        function loadPreset(type) {
+            document.getElementById('sqlInput').value = presets[type];
+            clearResult();
+        }
+
+        // 解析 SQL
+        function parseSQL() {
+            const sql = document.getElementById('sqlInput').value.trim();
+            const resultDiv = document.getElementById('result');
+
+            if (!sql) {
+                showResult('请输入 SQL 语句', 'error');
+                return;
+            }
+
+            try {
+                const result = SQLParser.parseSQL(sql,{includeComments:true});
+                const output = `✅ 解析成功!
+
+📋 基本信息:
+- 语句类型: ${result.ast.type}
+- 解析状态: ${result.success ? '成功' : '失败'}
+
+🌳 AST 结构:
+${JSON.stringify(result.ast, null, 2)}`;
+
+                showResult(output, 'success');
+            } catch (error) {
+                const output = `❌ 解析失败!
+
+🚫 错误信息:
+- 错误类型: ${error.type || 'PARSE_ERROR'}
+- 错误描述: ${error.message}
+- 错误位置: 第 ${error.line || '?'} 行, 第 ${error.column || '?'} 列
+
+💡 建议: 请检查 SQL 语法是否正确`;
+
+                showResult(output, 'error');
+            }
+        }
+
+        // 验证 SQL
+        function validateSQL() {
+            const sql = document.getElementById('sqlInput').value.trim();
+
+            if (!sql) {
+                showResult('请输入 SQL 语句', 'error');
+                return;
+            }
+
+            try {
+                const result = SQLParser.validateSQL(sql);
+                const output = `${result.isValid ? '✅' : '❌'} SQL 验证结果: ${result.isValid ? '有效' : '无效'}
+
+📊 验证详情:
+- 语法检查: ${result.isValid ? '通过' : '失败'}
+- 错误数量: ${result.errors.length}
+
+${result.errors.length > 0 ? '🚫 发现的错误:\n' + result.errors.map(err => `- ${err.message} (第${err.line}行, 第${err.column}列)`).join('\n') : ''}`;
+
+                showResult(output, result.isValid ? 'success' : 'error');
+            } catch (error) {
+                showResult(`❌ 验证过程出错: ${error.message}`, 'error');
+            }
+        }
+
+        // 提取表名
+        function extractTables() {
+            const sql = document.getElementById('sqlInput').value.trim();
+
+            if (!sql) {
+                showResult('请输入 SQL 语句', 'error');
+                return;
+            }
+
+            try {
+                const tables = SQLParser.extractTables(sql);
+                const output = `📋 提取到的表名:
+
+🗂️ 表列表 (共 ${tables.length} 个):
+${tables.length > 0 ? tables.map((table, index) => `${index + 1}. ${table}`).join('\n') : '未找到任何表名'}
+
+💡 说明: 包括主表、JOIN 表和子查询中的表`;
+
+                showResult(output, 'info');
+            } catch (error) {
+                showResult(`❌ 提取表名失败: ${error.message}`, 'error');
+            }
+        }
+
+        // 提取列名
+        function extractColumns() {
+            const sql = document.getElementById('sqlInput').value.trim();
+
+            if (!sql) {
+                showResult('请输入 SQL 语句', 'error');
+                return;
+            }
+
+            try {
+                const columns = SQLParser.extractColumns(sql);
+                const output = `📝 提取到的列名:
+
+📊 列列表 (共 ${columns.length} 个):
+${columns.length > 0 ? columns.map((column, index) => `${index + 1}. ${column}`).join('\n') : '未找到任何列名'}
+
+💡 说明: 包括选择列、条件列和排序列`;
+
+                showResult(output, 'info');
+            } catch (error) {
+                showResult(`❌ 提取列名失败: ${error.message}`, 'error');
+            }
+        }
+
+        // 智能分析 SQL
+        function analyzeSQL() {
+            const sql = document.getElementById('sqlInput').value.trim();
+
+            if (!sql) {
+                showResult('请输入 SQL 语句', 'error');
+                return;
+            }
+
+            try {
+                const result = SQLParser.analyzeSQL(sql);
+                
+                if (!result.success) {
+                    showResult(`智能分析失败: ${result.error}`, 'error');
+                    return;
+                }
+
+                const { analysis, complexity, query } = result;
+
+                // 格式化条件信息
+                const formatConditions = (conditions) => {
+                    if (!conditions || conditions.length === 0) return '无';
+                    return conditions.map((cond, index) =>
+                        `${index + 1}. ${cond.field} ${getOperatorText(cond.operator)} ${formatValue(cond.value)} (${cond.type})`
+                    ).join('\n');
+                };
+
+                // 格式化字段信息
+                const formatFields = (fields) => {
+                    if (!fields || fields.length === 0) return '无';
+                    return fields.map((field, index) =>
+                        `${index + 1}. ${field.name}${field.alias ? ` AS ${field.alias}` : ''}${field.table ? ` (来自 ${field.table})` : ''} - ${field.type}`
+                    ).join('\n');
+                };
+
+                // 格式化表信息
+                const formatTables = (tables) => {
+                    if (!tables || tables.length === 0) return '无';
+                    return tables.map((table, index) =>
+                        `${index + 1}. ${table.name}${table.alias ? ` AS ${table.alias}` : ''} - ${table.type}`
+                    ).join('\n');
+                };
+
+                // 格式化JOIN信息
+                const formatJoins = (joins) => {
+                    if (!joins || joins.length === 0) return '无';
+                    return joins.map((join, index) =>
+                        `${index + 1}. ${join.type} ${join.table}${join.condition ? ` ON ${join.condition}` : ''}`
+                    ).join('\n');
+                };
+
+                // 格式化排序规则
+                const formatOrderBy = (orderBy) => {
+                    if (!orderBy || orderBy.length === 0) return '无';
+                    return orderBy.map((order, index) =>
+                        `${index + 1}. ${order.field} ${order.direction}`
+                    ).join('\n');
+                };
+
+                const output = `🧠 SQL 智能分析结果:
+
+📋 基本信息:
+- 查询类型: ${query.type}
+- 复杂度评分: ${complexity.score}/10 (${complexity.level})
+
+🔍 查询条件 (${analysis.conditions.length} 个):
+${formatConditions(analysis.conditions)}
+
+📊 输出字段 (${analysis.fields.length} 个):
+${formatFields(analysis.fields)}
+
+🗂️ 涉及表 (${analysis.tables.length} 个):
+${formatTables(analysis.tables)}
+
+🔗 JOIN 关系 (${analysis.joins.length} 个):
+${formatJoins(analysis.joins)}
+
+📈 排序规则 (${analysis.orderBy.length} 个):
+${formatOrderBy(analysis.orderBy)}
+
+⚡ 性能特征:
+- 复杂度因子: ${complexity.factors.join(', ') || '无'}
+
+💡 复杂度说明: ${complexity.description || '简单查询'}`;
+
+                showResult(output, 'success');
+            } catch (error) {
+                showResult(`❌ 智能分析失败: ${error.message}`, 'error');
+            }
+        }
+
+        // 辅助函数：获取操作符文本
+        function getOperatorText(operator) {
+            const operatorMap = {
+                '=': '等于',
+                '!=': '不等于',
+                '<>': '不等于',
+                '>': '大于',
+                '<': '小于',
+                '>=': '大于等于',
+                '<=': '小于等于',
+                'LIKE': '包含',
+                'IN': '在列表中',
+                'BETWEEN': '在范围内'
+            };
+            return operatorMap[operator] || operator;
+        }
+
+        // 辅助函数：格式化值
+        function formatValue(value) {
+            if (Array.isArray(value)) {
+                return `[${value.join(', ')}]`;
+            }
+            if (typeof value === 'object' && value !== null) {
+                if (value.start !== undefined && value.end !== undefined) {
+                    return `${value.start} 到 ${value.end}`;
+                }
+                return JSON.stringify(value);
+            }
+            return String(value);
+        }
+
+        // 显示结果
+        function showResult(text, type) {
+            const resultDiv = document.getElementById('result');
+            resultDiv.textContent = text;
+            resultDiv.className = `result ${type}`;
+            resultDiv.style.display = 'block';
+        }
+
+        // 清空结果
+        function clearResult() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.style.display = 'none';
+            resultDiv.textContent = '';
+        }
+
+        // 页面加载完成后的初始化
+        document.addEventListener('DOMContentLoaded', function () {
+            console.log('🚀 SQL 解析器已加载完成!');
+            console.log('window.SQLParser:', window.SQLParser);
+            console.log('typeof SQLParser:', typeof SQLParser);
+            if (window.SQLParser) {
+                console.log('可用的 API:', Object.keys(window.SQLParser));
+            }
+        });
+    </script>
+</body>
+
+</html>
