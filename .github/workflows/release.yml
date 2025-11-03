@@ -5,6 +5,10 @@ on:
     tags:
       - 'v*'
 
+permissions:
+  contents: write
+  packages: write
+
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -38,17 +42,15 @@ jobs:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         
     - name: Create GitHub Release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      uses: softprops/action-gh-release@v1
       with:
-        tag_name: ${{ github.ref }}
-        release_name: Release ${{ github.ref }}
+        tag_name: ${{ github.ref_name }}
+        name: Release ${{ github.ref_name }}
         body: |
           ## 🚀 新版本发布
 
           ### 📋 更新内容
-          请查看 [CHANGELOG.md](https://github.com/qiupo/sql-parser-js/blob/main/CHANGELOG.md) 了解详细更新内容。
+          请查看 [CHANGELOG.md](https://github.com/qiupo/sql-parser-ast-js/blob/main/CHANGELOG.md) 了解详细更新内容。
 
           ### 📦 安装方式
           ```bash
@@ -57,7 +59,7 @@ jobs:
 
           ### 🔗 相关链接
           - [npm 包](https://www.npmjs.com/package/sql-parser-ast-js)
-          - [API 文档](https://github.com/qiupo/sql-parser-js/blob/main/docs/API.md)
-          - [使用示例](https://github.com/qiupo/sql-parser-js/blob/main/docs/examples.md)
+          - [API 文档](https://github.com/qiupo/sql-parser-ast-js/blob/main/docs/API.md)
+          - [使用示例](https://github.com/qiupo/sql-parser-ast-js/blob/main/docs/examples.md)
         draft: false
         prerelease: false

@@ -13,8 +13,8 @@
 
 2. **克隆项目**
    ```bash
-   git clone https://github.com/yourusername/sql-parser-js.git
-   cd sql-parser-js
+   git clone https://github.com/qiupo/sql-parser-ast-js.git
+   cd sql-parser-ast-js
    ```
 
 3. **安装依赖**

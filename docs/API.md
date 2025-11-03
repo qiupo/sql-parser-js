@@ -45,7 +45,7 @@ interface ParseResult {
 **示例:**
 
 ```javascript
-import { parseSQL } from 'sql-parser-js';
+import { parseSQL } from 'sql-parser-ast-js';
 
 // 基本用法
 const result = parseSQL('SELECT id, name FROM users WHERE age > 18');
@@ -147,7 +147,7 @@ interface ComplexityInfo {
 **示例:**
 
 ```javascript
-import { analyzeSQL } from 'sql-parser-js';
+import { analyzeSQL } from 'sql-parser-ast-js';
 
 // 基本查询分析
 const basicAnalysis = analyzeSQL(`
@@ -256,7 +256,7 @@ interface ValidationResult {
 **示例:**
 
 ```javascript
-import { validateSQL } from 'sql-parser-js';
+import { validateSQL } from 'sql-parser-ast-js';
 
 // 有效的SQL
 const valid = validateSQL('SELECT * FROM users');
@@ -296,7 +296,7 @@ function extractTables(sqlString: string): string[]
 **示例:**
 
 ```javascript
-import { extractTables } from 'sql-parser-js';
+import { extractTables } from 'sql-parser-ast-js';
 
 const tables1 = extractTables('SELECT * FROM users');
 console.log(tables1); // ['users']
@@ -335,7 +335,7 @@ function extractColumns(sqlString: string): string[]
 **示例:**
 
 ```javascript
-import { extractColumns } from 'sql-parser-js';
+import { extractColumns } from 'sql-parser-ast-js';
 
 const columns1 = extractColumns('SELECT id, name, email FROM users');
 console.log(columns1); // ['id', 'name', 'email']
@@ -382,7 +382,7 @@ class Lexer {
 **示例:**
 
 ```javascript
-import { Lexer } from 'sql-parser-js';
+import { Lexer } from 'sql-parser-ast-js';
 
 const lexer = new Lexer('SELECT * FROM users WHERE id = 1');
 const tokens = lexer.tokenize();
@@ -436,7 +436,7 @@ class Parser {
 **示例:**
 
 ```javascript
-import { Lexer, Parser } from 'sql-parser-js';
+import { Lexer, Parser } from 'sql-parser-ast-js';
 
 const lexer = new Lexer('SELECT id, name FROM users WHERE age > 18');
 const tokens = lexer.tokenize();
@@ -483,7 +483,7 @@ class SQLError extends Error {
 **示例:**
 
 ```javascript
-import { parseSQL, SQLError } from 'sql-parser-js';
+import { parseSQL, SQLError } from 'sql-parser-ast-js';
 
 try {
   const result = parseSQL('SELECT * FROM');
@@ -711,7 +711,7 @@ interface LexerOptions {
 ### 复杂查询解析
 
 ```javascript
-import { parseSQL } from 'sql-parser-js';
+import { parseSQL } from 'sql-parser-ast-js';
 
 const complexSQL = `
   SELECT 
@@ -753,7 +753,7 @@ if (result.success) {
 ### 批量SQL验证
 
 ```javascript
-import { validateSQL } from 'sql-parser-js';
+import { validateSQL } from 'sql-parser-ast-js';
 
 const sqlStatements = [
   'SELECT * FROM users',
@@ -778,7 +778,7 @@ sqlStatements.forEach((sql, index) => {
 ### 自定义AST处理
 
 ```javascript
-import { parseSQL } from 'sql-parser-js';
+import { parseSQL } from 'sql-parser-ast-js';
 
 function analyzeSQL(sql) {
   const result = parseSQL(sql);

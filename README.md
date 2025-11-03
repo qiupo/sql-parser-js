@@ -2,8 +2,8 @@
 
 [![npm version](https://badge.fury.io/js/sql-parser-ast-js.svg)](https://badge.fury.io/js/sql-parser-ast-js)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Build Status](https://github.com/yourusername/sql-parser-js/workflows/CI/badge.svg)](https://github.com/yourusername/sql-parser-js/actions)
-[![Coverage Status](https://coveralls.io/repos/github/yourusername/sql-parser-js/badge.svg?branch=main)](https://coveralls.io/github/yourusername/sql-parser-js?branch=main)
+[![Build Status](https://github.com/qiupo/sql-parser-ast-js/workflows/CI/badge.svg)](https://github.com/qiupo/sql-parser-ast-js/actions)
+[![Coverage Status](https://coveralls.io/repos/github/yourusername/sql-parser-ast-js/badge.svg?branch=main)](https://coveralls.io/github/yourusername/sql-parser-ast-js?branch=main)
 
 一个功能强大的浏览器端 SQL 解析器 JavaScript 库，支持将 SQL 语句解析为抽象语法树(AST)，并提供智能查询分析功能。
 
@@ -36,10 +36,10 @@ yarn add sql-parser-ast-js
 
 ```html
 <!-- 开发版本 -->
-<script src="https://unpkg.com/sql-parser-js/dist/sql-parser.js"></script>
+<script src="https://unpkg.com/sql-parser-ast-js/dist/sql-parser.js"></script>
 
 <!-- 生产版本 (压缩) -->
-<script src="https://unpkg.com/sql-parser-js/dist/sql-parser.min.js"></script>
+<script src="https://unpkg.com/sql-parser-ast-js/dist/sql-parser.min.js"></script>
 ```
 
 ## 快速开始
@@ -64,7 +64,7 @@ if (result.success) {
 ### 查询分析器 - 智能提取查询信息
 
 ```javascript
-import { analyzeSQL } from "sql-parser-js";
+import { analyzeSQL } from "sql-parser-ast-js";
 
 // 分析复杂SQL查询
 const analysis = analyzeSQL(`
@@ -140,7 +140,7 @@ const config = generateQueryConfig(analysis);
 ### 浏览器中使用
 
 ```html
-<script src="https://unpkg.com/sql-parser-js/dist/sql-parser.min.js"></script>
+<script src="https://unpkg.com/sql-parser-ast-js/dist/sql-parser.min.js"></script>
 <script>
   const result = SQLParser.parseSQL("SELECT * FROM products");
   console.log(result);
@@ -386,7 +386,7 @@ console.log(columns); // ['id', 'name', 'email', 'active']
 ### 使用 Lexer 和 Parser 类
 
 ```javascript
-import { Lexer, Parser } from "sql-parser-js";
+import { Lexer, Parser } from "sql-parser-ast-js";
 
 // 词法分析
 const lexer = new Lexer("SELECT * FROM users");
@@ -402,7 +402,7 @@ console.log(ast);
 ### 自定义错误处理
 
 ```javascript
-import { parseSQL, SQLError } from "sql-parser-js";
+import { parseSQL, SQLError } from "sql-parser-ast-js";
 
 try {
   const result = parseSQL("INVALID SQL");
@@ -422,7 +422,7 @@ try {
 ### AST 遍历
 
 ```javascript
-import { parseSQL } from "sql-parser-js";
+import { parseSQL } from "sql-parser-ast-js";
 
 function traverseAST(node, callback) {
   callback(node);
@@ -567,7 +567,7 @@ interface SQLError {
 
 ```javascript
 // 对于大型SQL语句，可以使用流式处理
-import { Lexer } from "sql-parser-js";
+import { Lexer } from "sql-parser-ast-js";
 
 const lexer = new Lexer(largeSQLString, {
   bufferSize: 8192, // 设置缓冲区大小
@@ -595,7 +595,7 @@ function cachedParseSQL(sql) {
 ### 项目结构
 
 ```
-sql-parser-js/
+sql-parser-ast-js/
 ├── src/
 │   ├── index.js          # 主入口文件
 │   ├── lexer/            # 词法分析器
@@ -650,8 +650,8 @@ npm run benchmark
 
 1. **Fork 并克隆项目**
    ```bash
-   git clone https://github.com/yourusername/sql-parser-js.git
-   cd sql-parser-js
+   git clone https://github.com/qiupo/sql-parser-ast-js.git
+   cd sql-parser-ast-js
    ```
 
 2. **安装依赖**
@@ -687,7 +687,7 @@ npm run benchmark
 
 如果您发现了 bug 或有功能建议，请：
 
-1. 检查是否已有相关 [Issue](https://github.com/yourusername/sql-parser-js/issues)
+1. 检查是否已有相关 [Issue](https://github.com/qiupo/sql-parser-ast-js/issues)
 2. 如果没有，请创建新的 Issue
 3. 提供详细的问题描述和复现步骤
 
@@ -719,9 +719,9 @@ MIT License - 详见 [LICENSE](LICENSE) 文件。
 
 ### 联系我们
 
-- 🐛 [报告 Bug](https://github.com/yourusername/sql-parser-js/issues/new?template=bug_report.md)
-- 💡 [功能建议](https://github.com/yourusername/sql-parser-js/issues/new?template=feature_request.md)
-- 💬 [讨论区](https://github.com/yourusername/sql-parser-js/discussions)
+- 🐛 [报告 Bug](https://github.com/qiupo/sql-parser-ast-js/issues/new?template=bug_report.md)
+- 💡 [功能建议](https://github.com/qiupo/sql-parser-ast-js/issues/new?template=feature_request.md)
+- 💬 [讨论区](https://github.com/qiupo/sql-parser-ast-js/discussions)
 
 ## 相关项目
 

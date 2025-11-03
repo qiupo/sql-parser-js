@@ -19,7 +19,7 @@
 ### 简单的 SQL 解析
 
 ```javascript
-import { parseSQL } from "sql-parser-js";
+import { parseSQL } from "sql-parser-ast-js";
 
 // 解析简单的SELECT语句
 const result = parseSQL("SELECT * FROM users");
@@ -37,7 +37,7 @@ if (result.success) {
 ### 语法验证
 
 ```javascript
-import { validateSQL } from "sql-parser-js";
+import { validateSQL } from "sql-parser-ast-js";
 
 const sqlQueries = [
   "SELECT * FROM users", // 有效
@@ -62,7 +62,7 @@ sqlQueries.forEach((sql, index) => {
 ### 提取表名和字段名
 
 ```javascript
-import { extractTables, extractColumns } from "sql-parser-js";
+import { extractTables, extractColumns } from "sql-parser-ast-js";
 
 const sql = `
   SELECT u.id, u.name, p.title, c.name as category
@@ -86,7 +86,7 @@ console.log("涉及的字段:", columns);
 ### 基本 SELECT 查询
 
 ```javascript
-import { parseSQL } from "sql-parser-js";
+import { parseSQL } from "sql-parser-ast-js";
 
 const basicSelect = parseSQL(
   "SELECT id, name, email FROM users WHERE active = 1"
@@ -431,7 +431,7 @@ if (result.success) {
 ### 语法错误处理
 
 ```javascript
-import { parseSQL, SQLError } from "sql-parser-js";
+import { parseSQL, SQLError } from "sql-parser-ast-js";
 
 const invalidSQLs = [
   "SELECT * FROM", // 缺少表名
@@ -471,7 +471,7 @@ invalidSQLs.forEach((sql, index) => {
 ### 词法错误处理
 
 ```javascript
-import { Lexer } from "sql-parser-js";
+import { Lexer } from "sql-parser-ast-js";
 
 const invalidTokens = [
   "SELECT * FROM users WHERE name = 'unterminated string",
@@ -500,7 +500,7 @@ invalidTokens.forEach((sql, index) => {
 ### AST 遍历
 
 ```javascript
-import { parseSQL } from "sql-parser-js";
+import { parseSQL } from "sql-parser-ast-js";
 
 function traverseAST(node, callback, depth = 0) {
   if (!node || typeof node !== "object") return;
@@ -686,7 +686,7 @@ if (result.success) {
 ### 批量解析优化
 
 ```javascript
-import { parseSQL } from "sql-parser-js";
+import { parseSQL } from "sql-parser-ast-js";
 
 // 缓存解析结果
 const parseCache = new Map();
@@ -727,7 +727,7 @@ console.log(
 ### 内存使用优化
 
 ```javascript
-import { Lexer, Parser } from "sql-parser-js";
+import { Lexer, Parser } from "sql-parser-ast-js";
 
 function parseWithMemoryOptimization(sql) {
   // 使用较小的缓冲区
@@ -791,7 +791,7 @@ measureMemoryUsage(parseWithMemoryOptimization, largSQL);
 ### SQL 查询分析器
 
 ```javascript
-import { parseSQL, extractTables, extractColumns } from "sql-parser-js";
+import { parseSQL, extractTables, extractColumns } from "sql-parser-ast-js";
 
 class SQLAnalyzer {
   constructor() {
@@ -1022,7 +1022,7 @@ testQueries.forEach((sql, index) => {
 ### SQL 格式化工具
 
 ```javascript
-import { parseSQL } from "sql-parser-js";
+import { parseSQL } from "sql-parser-ast-js";
 
 class SQLFormatter {
   constructor(options = {}) {
@@ -1225,7 +1225,7 @@ try {
 ### SQL 查询优化建议工具
 
 ```javascript
-import { parseSQL } from "sql-parser-js";
+import { parseSQL } from "sql-parser-ast-js";
 
 class SQLOptimizer {
   constructor() {
@@ -1355,7 +1355,7 @@ if (optimization.success) {
 ### 数据库迁移工具
 
 ```javascript
-import { parseSQL } from "sql-parser-js";
+import { parseSQL } from "sql-parser-ast-js";
 
 class DatabaseMigrationHelper {
   constructor(sourceDialect, targetDialect) {
@@ -1557,7 +1557,7 @@ if (conversion.success) {
 ### SQL 安全审计工具
 
 ```javascript
-import { parseSQL } from "sql-parser-js";
+import { parseSQL } from "sql-parser-ast-js";
 
 class SQLSecurityAuditor {
   constructor() {

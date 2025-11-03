@@ -1,9 +1,9 @@
 # SQL Parser JS
 
-[![npm version](https://badge.fury.io/js/sql-parser-js.svg)](https://badge.fury.io/js/sql-parser-js)
+[![npm version](https://badge.fury.io/js/sql-parser-ast-js.svg)](https://badge.fury.io/js/sql-parser-ast-js)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Build Status](https://github.com/qiupo/sql-parser-js/workflows/CI/badge.svg)](https://github.com/qiupo/sql-parser-js/actions)
-[![Coverage Status](https://coveralls.io/repos/github/qiupo/sql-parser-js/badge.svg?branch=main)](https://coveralls.io/github/qiupo/sql-parser-js?branch=main)
+[![Build Status](https://github.com/qiupo/sql-parser-ast-js/workflows/CI/badge.svg)](https://github.com/qiupo/sql-parser-ast-js/actions)
+[![Coverage Status](https://coveralls.io/repos/github/qiupo/sql-parser-ast-js/badge.svg?branch=main)](https://coveralls.io/github/qiupo/sql-parser-ast-js?branch=main)
 
 一个强大的 JavaScript SQL 解析器库，支持将常见的 SQL 语句解析为抽象语法树（AST），并提供智能查询分析功能。
 
@@ -22,17 +22,17 @@
 
 ### npm
 ```bash
-npm install sql-parser-js
+npm install sql-parser-ast-js
 ```
 
 ### yarn
 ```bash
-yarn add sql-parser-js
+yarn add sql-parser-ast-js
 ```
 
 ### CDN
 ```html
-<script src="https://unpkg.com/sql-parser-js@latest/dist/sql-parser.min.js"></script>
+<script src="https://unpkg.com/sql-parser-ast-js@latest/dist/sql-parser.min.js"></script>
 ```
 
 ## 🚀 快速开始
@@ -40,7 +40,7 @@ yarn add sql-parser-js
 ### 基础使用
 
 ```javascript
-import { parseSQL } from 'sql-parser-js';
+import { parseSQL } from 'sql-parser-ast-js';
 
 // 解析 SELECT 语句
 const result = parseSQL('SELECT id, name FROM users WHERE age > 18');
@@ -57,7 +57,7 @@ if (result.success) {
 ### Node.js 环境
 
 ```javascript
-const { parseSQL } = require('sql-parser-js');
+const { parseSQL } = require('sql-parser-ast-js');
 
 const sql = `
     SELECT u.id, u.name, p.title 
@@ -78,7 +78,7 @@ console.log(JSON.stringify(result.ast, null, 2));
 <!DOCTYPE html>
 <html>
 <head>
-    <script src="https://unpkg.com/sql-parser-js@latest/dist/sql-parser.min.js"></script>
+    <script src="https://unpkg.com/sql-parser-ast-js@latest/dist/sql-parser.min.js"></script>
 </head>
 <body>
     <script>
@@ -175,7 +175,7 @@ WHERE p.id IS NULL;
 ### 示例
 
 ```javascript
-import { parseSQL } from 'sql-parser-js';
+import { parseSQL } from 'sql-parser-ast-js';
 
 // 基础解析
 const result1 = parseSQL('SELECT * FROM users');
@@ -221,7 +221,7 @@ if (result.success && result.analysis) {
 ### AST 遍历
 
 ```javascript
-import { parseSQL, ASTVisitor } from 'sql-parser-js';
+import { parseSQL, ASTVisitor } from 'sql-parser-ast-js';
 
 const result = parseSQL('SELECT id, name FROM users WHERE age > 18');
 
@@ -244,7 +244,7 @@ if (result.success) {
 ### 自定义插件
 
 ```javascript
-import { parseSQL, registerPlugin } from 'sql-parser-js';
+import { parseSQL, registerPlugin } from 'sql-parser-ast-js';
 
 // 注册 MySQL 特定语法插件
 registerPlugin('mysql', {
@@ -306,8 +306,8 @@ SQL Parser JS 经过性能优化，能够高效处理各种规模的 SQL 语句�
 
 1. Fork 并克隆项目
 ```bash
-git clone https://github.com/qiupo/sql-parser-js.git
-cd sql-parser-js
+git clone https://github.com/qiupo/sql-parser-ast-js.git
+cd sql-parser-ast-js
 ```
 
 2. 安装依赖
@@ -371,9 +371,9 @@ git push origin feature/your-feature-name
 - [开发指南](docs/development.md) - 架构和扩展
 
 ### 🐛 问题反馈
-- [Bug 报告](https://github.com/qiupo/sql-parser-js/issues/new?template=bug_report.md) - 报告问题
-- [功能请求](https://github.com/qiupo/sql-parser-js/issues/new?template=feature_request.md) - 建议新功能
-- [讨论区](https://github.com/qiupo/sql-parser-js/discussions) - 社区讨论
+- [Bug 报告](https://github.com/qiupo/sql-parser-ast-js/issues/new?template=bug_report.md) - 报告问题
+- [功能请求](https://github.com/qiupo/sql-parser-ast-js/issues/new?template=feature_request.md) - 建议新功能
+- [讨论区](https://github.com/qiupo/sql-parser-ast-js/discussions) - 社区讨论
 
 ### 💬 联系方式
 - GitHub Issues: 技术问题和 Bug 报告

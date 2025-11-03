@@ -32,7 +32,7 @@ assignees: ''
 **Node.js 环境 (请填写以下信息):**
  - Node.js 版本: [例如 18.17.0]
  - npm 版本: [例如 9.6.7]
- - sql-parser-js 版本: [例如 1.0.0]
+ - sql-parser-ast-js 版本: [例如 1.0.0]
 
 ## 📝 SQL 语句
 如果 bug 与特定的 SQL 语句相关，请提供：
@@ -46,7 +46,7 @@ SELECT * FROM users WHERE id = 1;
 如果适用，请添加代码示例来重现问题：
 
 ```javascript
-import { parseSQL } from 'sql-parser-js';
+import { parseSQL } from 'sql-parser-ast-js';
 
 const result = parseSQL('您的SQL语句');
 console.log(result);

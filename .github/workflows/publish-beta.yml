@@ -11,6 +11,10 @@ on:
         required: true
         type: string
 
+permissions:
+  contents: write
+  packages: write
+
 jobs:
   publish-beta:
     runs-on: ubuntu-latest
@@ -56,12 +60,10 @@ jobs:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         
     - name: Create beta release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      uses: softprops/action-gh-release@v1
       with:
         tag_name: v${{ env.BETA_VERSION || github.event.inputs.version }}
-        release_name: Beta Release v${{ env.BETA_VERSION || github.event.inputs.version }}
+        name: Beta Release v${{ env.BETA_VERSION || github.event.inputs.version }}
         body: |
           ## 🧪 Beta 版本发布
 
@@ -69,9 +71,9 @@ jobs:
 
           ### 📦 安装方式
           ```bash
-          npm install sql-parser-js@beta
+          npm install sql-parser-ast-js@beta
           # 或指定具体版本
-          npm install sql-parser-js@${{ env.BETA_VERSION || github.event.inputs.version }}
+          npm install sql-parser-ast-js@${{ env.BETA_VERSION || github.event.inputs.version }}
           ```
 
           ### ⚠️ 注意事项
@@ -80,7 +82,7 @@ jobs:
           - 如有问题请及时反馈
 
           ### 🔗 相关链接
-          - [开发文档](https://github.com/qiupo/sql-parser-js/blob/develop/docs/development.md)
-          - [问题反馈](https://github.com/qiupo/sql-parser-js/issues)
+          - [开发文档](https://github.com/qiupo/sql-parser-ast-js/blob/develop/docs/development.md)
+          - [问题反馈](https://github.com/qiupo/sql-parser-ast-js/issues)
         draft: false
         prerelease: true
