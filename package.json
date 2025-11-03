@@ -1,5 +1,5 @@
 {
-  "name": "@qiupo/sql-parser",
+  "name": "sql-parser-ast-js",
   "version": "1.0.0",
   "description": "A powerful SQL parser library for JavaScript that supports parsing common SQL statements into AST with intelligent query analysis capabilities",
   "type": "module",
@@ -81,9 +81,6 @@
     "terser-webpack-plugin": "^5.3.0",
     "webpack": "^5.88.0",
     "webpack-cli": "^5.1.0"
-  },
-  "publishConfig": {
-    "access": "public"
   },
   "repository": {
     "type": "git",

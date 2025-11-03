@@ -33,7 +33,7 @@ jobs:
       run: npm run build
       
     - name: Publish to npm
-      run: npm publish --access public
+      run: npm publish
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         
@@ -52,11 +52,11 @@ jobs:
 
           ### 📦 安装方式
           ```bash
-          npm install @qiupo/sql-parser@${{ github.ref_name }}
+          npm install sql-parser-ast-js@${{ github.ref_name }}
           ```
 
           ### 🔗 相关链接
-          - [npm 包](https://www.npmjs.com/package/@qiupo/sql-parser)
+          - [npm 包](https://www.npmjs.com/package/sql-parser-ast-js)
           - [API 文档](https://github.com/qiupo/sql-parser-js/blob/main/docs/API.md)
           - [使用示例](https://github.com/qiupo/sql-parser-js/blob/main/docs/examples.md)
         draft: false
