@@ -30,7 +30,7 @@ jobs:
       run: yarn install --frozen-lockfile
       
     - name: Run tests (excluding performance)
-      run: npm run test:unit && npm run test:integration
+      run: npm run test:ci
       
     - name: Run linter
       run: npm run lint
