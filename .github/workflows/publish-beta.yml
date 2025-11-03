@@ -51,7 +51,7 @@ jobs:
         echo "BETA_VERSION=$BETA_VERSION" >> $GITHUB_ENV
         
     - name: Publish beta to npm
-      run: npm publish --tag beta
+      run: npm publish --tag beta --access public
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         
