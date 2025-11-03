@@ -6,9 +6,6 @@
  */
 
 import { parseSQL } from "../src/index.js";
-import { Parser } from "../src/parser/parser.js";
-import { Lexer } from "../src/lexer/lexer.js";
-import { SQLError } from "../src/errors/sql-error.js";
 
 describe("Parser", () => {
   describe("SELECT Statement Parsing", () => {

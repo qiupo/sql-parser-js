@@ -289,7 +289,7 @@ describe("Lexer", () => {
 
       try {
         lexer.tokenize();
-        fail("Expected error to be thrown");
+        throw new Error("Expected error to be thrown");
       } catch (error) {
         expect(error).toBeInstanceOf(SQLError);
         expect(error.code).toBe("LEXICAL_ERROR");
