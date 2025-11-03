@@ -1,6 +1,6 @@
 # SQL Parser JS
 
-[![npm version](https://badge.fury.io/js/@qiupo/sql-parser.svg)](https://badge.fury.io/js/@qiupo/sql-parser)
+[![npm version](https://badge.fury.io/js/sql-parser-ast-js.svg)](https://badge.fury.io/js/sql-parser-ast-js)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Build Status](https://github.com/yourusername/sql-parser-js/workflows/CI/badge.svg)](https://github.com/yourusername/sql-parser-js/actions)
 [![Coverage Status](https://coveralls.io/repos/github/yourusername/sql-parser-js/badge.svg?branch=main)](https://coveralls.io/github/yourusername/sql-parser-js?branch=main)
@@ -23,13 +23,13 @@
 ### 使用 npm
 
 ```bash
-npm install @qiupo/sql-parser
+npm install sql-parser-ast-js
 ```
 
 ### 使用 yarn
 
 ```bash
-yarn add @qiupo/sql-parser
+yarn add sql-parser-ast-js
 ```
 
 ### 使用 CDN
@@ -47,7 +47,7 @@ yarn add @qiupo/sql-parser
 ### 基本用法
 
 ```javascript
-import { parseSQL } from "@qiupo/sql-parser";
+import { parseSQL } from "sql-parser-ast-js";
 
 // 解析SQL语句
 const result = parseSQL("SELECT id, name FROM users WHERE age > 18");
