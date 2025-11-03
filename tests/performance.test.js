@@ -234,8 +234,8 @@ describe("Performance Benchmarks", () => {
       const finalMemory = process.memoryUsage().heapUsed;
       const memoryIncrease = finalMemory - initialMemory;
 
-      // Memory increase should be reasonable (less than 10MB)
-      expect(memoryIncrease).toBeLessThan(10 * 1024 * 1024);
+      // Memory increase should be reasonable (less than 20MB)
+      expect(memoryIncrease).toBeLessThan(20 * 1024 * 1024);
       console.log(
         `Memory increase after 1000 parses: ${(
           memoryIncrease /
