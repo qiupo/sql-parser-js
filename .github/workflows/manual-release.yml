@@ -1,0 +1,142 @@
+name: Manual Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version_type:
+        description: 'Version type'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+          - prerelease
+      prerelease_id:
+        description: 'Prerelease identifier (for prerelease only)'
+        required: false
+        default: 'beta'
+        type: string
+      dry_run:
+        description: 'Dry run (test without publishing)'
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        token: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18.x'
+        cache: 'npm'
+        registry-url: 'https://registry.npmjs.org'
+        
+    - name: Configure Git
+      run: |
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Run tests
+      run: npm test
+      
+    - name: Run linter
+      run: npm run lint
+      
+    - name: Build package
+      run: npm run build
+      
+    - name: Version bump (patch)
+      if: inputs.version_type == 'patch' && !inputs.dry_run
+      run: npm version patch
+      
+    - name: Version bump (minor)
+      if: inputs.version_type == 'minor' && !inputs.dry_run
+      run: npm version minor
+      
+    - name: Version bump (major)
+      if: inputs.version_type == 'major' && !inputs.dry_run
+      run: npm version major
+      
+    - name: Version bump (prerelease)
+      if: inputs.version_type == 'prerelease' && !inputs.dry_run
+      run: npm version prerelease --preid=${{ inputs.prerelease_id }}
+      
+    - name: Dry run version check
+      if: inputs.dry_run
+      run: |
+        echo "🧪 Dry run mode - would create version:"
+        if [ "${{ inputs.version_type }}" = "prerelease" ]; then
+          npm version prerelease --preid=${{ inputs.prerelease_id }} --no-git-tag-version
+        else
+          npm version ${{ inputs.version_type }} --no-git-tag-version
+        fi
+        NEW_VERSION=$(node -p "require('./package.json').version")
+        echo "New version would be: $NEW_VERSION"
+        
+    - name: Publish to npm
+      if: !inputs.dry_run
+      run: |
+        if [ "${{ inputs.version_type }}" = "prerelease" ]; then
+          npm publish --tag ${{ inputs.prerelease_id }}
+        else
+          npm publish
+        fi
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        
+    - name: Get new version
+      if: !inputs.dry_run
+      id: version
+      run: echo "new_version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
+      
+    - name: Create GitHub Release
+      if: !inputs.dry_run
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: v${{ steps.version.outputs.new_version }}
+        release_name: Release v${{ steps.version.outputs.new_version }}
+        body: |
+          ## 🚀 版本 ${{ steps.version.outputs.new_version }} 发布
+
+          ### 📋 更新内容
+          请查看 [CHANGELOG.md](https://github.com/qiupo/sql-parser-js/blob/main/CHANGELOG.md) 了解详细更新内容。
+
+          ### 📦 安装方式
+          ```bash
+          npm install sql-parser-js@${{ steps.version.outputs.new_version }}
+          ```
+
+          ### 🔗 相关链接
+          - [npm 包](https://www.npmjs.com/package/sql-parser-js)
+          - [API 文档](https://github.com/qiupo/sql-parser-js/blob/main/docs/API.md)
+          - [使用示例](https://github.com/qiupo/sql-parser-js/blob/main/docs/examples.md)
+          - [中文文档](https://github.com/qiupo/sql-parser-js/blob/main/README-zh.md)
+        draft: false
+        prerelease: ${{ inputs.version_type == 'prerelease' }}
+        
+    - name: Summary
+      run: |
+        if [ "${{ inputs.dry_run }}" = "true" ]; then
+          echo "✅ Dry run completed successfully!"
+          echo "📋 All checks passed, ready for actual release"
+        else
+          echo "🎉 Release completed successfully!"
+          echo "📦 Version ${{ steps.version.outputs.new_version }} published to npm"
+          echo "🔗 GitHub release created"
+        fi
