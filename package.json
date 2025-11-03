@@ -1,5 +1,5 @@
 {
-  "name": "sql-parser-js",
+  "name": "@qiupo/sql-parser",
   "version": "1.0.0",
   "description": "A powerful SQL parser library for JavaScript that supports parsing common SQL statements into AST with intelligent query analysis capabilities",
   "type": "module",

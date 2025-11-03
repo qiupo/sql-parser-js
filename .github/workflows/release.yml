@@ -52,11 +52,11 @@ jobs:
 
           ### 📦 安装方式
           ```bash
-          npm install sql-parser-js@${{ github.ref_name }}
+          npm install @qiupo/sql-parser@${{ github.ref_name }}
           ```
 
           ### 🔗 相关链接
-          - [npm 包](https://www.npmjs.com/package/sql-parser-js)
+          - [npm 包](https://www.npmjs.com/package/@qiupo/sql-parser)
           - [API 文档](https://github.com/qiupo/sql-parser-js/blob/main/docs/API.md)
           - [使用示例](https://github.com/qiupo/sql-parser-js/blob/main/docs/examples.md)
         draft: false
